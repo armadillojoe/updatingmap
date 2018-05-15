@@ -18,7 +18,7 @@
 
 	app.use(express.static('public'))
 
-	app.listen(3000, () => console.log("Started Server"));
+	app.listen(process.env.PORT || 3000, () => console.log("Started Server"));
 	
 	function drawMap() {
 		var fnt = PImage.registerFont('font.ttf', 'Open Sans');
