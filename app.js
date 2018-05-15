@@ -124,6 +124,7 @@
 		timer = setInterval(() => {
 			if (ready[0] && ready[1] && ready[2]) {
 				clearInterval(timer);
+				ready = [false, false, false];
 				callback();
 			} else {
 				console.log("Waiting for data...");
