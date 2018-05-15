@@ -11,10 +11,12 @@
 
 	var app = express();
 
-	var now = new Date().getTime() / 1000 / 60 / 60;
-	if (checkReloadNeeded(now)) {
-		updateData(now, drawMap);
-	}
+	setInterval(() => {
+		var now = new Date().getTime() / 1000 / 60 / 60;
+		if (checkReloadNeeded(now)) {
+			updateData(now, drawMap);
+		}
+	}, 1000 * 60 * 60);
 
 	app.use(express.static('public'))
 
