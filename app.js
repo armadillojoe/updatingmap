@@ -16,7 +16,7 @@
 		if (checkReloadNeeded(now)) {
 			updateData(now, drawMap);
 		}
-	}, 1000 * 60 * 60);
+	}, 100 * 60 * 60);
 
 	app.use(express.static('public'))
 
