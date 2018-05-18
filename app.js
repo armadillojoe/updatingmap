@@ -10,17 +10,26 @@
 	var ready = [false, false, false];
 
 	var app = express();
+	
+	app.use(express.static('public'))
 
-	setInterval(() => {
+	app.listen(process.env.PORT || 3000, () => console.log("Started Server"));
+	
+	main();
+	
+	function main() {
+		justDoIt();
+		setInterval(() => {
+			justDoIt();
+		}, 100 * 60 * 60);
+	}
+	
+	function justDoIt() {
 		var now = new Date().getTime() / 1000 / 60 / 60;
 		if (checkReloadNeeded(now)) {
 			updateData(now, drawMap);
 		}
-	}, 100 * 60 * 60);
-
-	app.use(express.static('public'))
-
-	app.listen(process.env.PORT || 3000, () => console.log("Started Server"));
+	}
 	
 	function drawMap() {
 		var fnt = PImage.registerFont('font.ttf', 'Open Sans');
