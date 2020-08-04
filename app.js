@@ -105,21 +105,21 @@
 	
 	function updateData(now, callback) {
 		var tribes = fs.createWriteStream("tribes.txt");
-		http.get("https://en101.tribalwars.net/map/ally.txt", (res) => {
+		http.get("https://en115.tribalwars.net/map/ally.txt", (res) => {
 			res.pipe(tribes);
 			res.on('end', () => {
 				ready[0] = true;
 			});
 		});
 		var players = fs.createWriteStream("players.txt");
-		http.get("https://en101.tribalwars.net/map/player.txt", (res) => {
+		http.get("https://en115.tribalwars.net/map/player.txt", (res) => {
 			res.pipe(players);
 			res.on('end', () => {
 				ready[1] = true;
 			});
 		});
 		var villages = fs.createWriteStream("villages.txt");
-		http.get("https://en101.tribalwars.net/map/village.txt", (res) => {
+		http.get("https://en115.tribalwars.net/map/village.txt", (res) => {
 			res.pipe(villages);
 			res.on('end', () => {
 				ready[2] = true;
