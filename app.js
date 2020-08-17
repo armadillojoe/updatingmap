@@ -85,7 +85,7 @@
 					y *= 2;
 					ctx.fillRect(x - 1, y - 1, 4, 4);
 				}
-				ctx.fillText((j + 1) + " " + tribes[j][2], 20, 20 + j * 30);
+				ctx.fillText((j + 1) + " " + decodeURI(tribes[j][2]), 20, 20 + j * 30);
 			}
 			
 			PImage.encodePNGToStream(img, fs.createWriteStream('public/top10.png')).then(() => {
