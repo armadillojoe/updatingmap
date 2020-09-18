@@ -27,14 +27,15 @@
 	function justDoIt() {
 		var now = new Date().getTime() / 1000 / 60 / 60;
 		if (checkReloadNeeded(now)) {
-			updateData(now, drawMap);
+			updateData(now, drawMap, "en115");
+			updateData(now, drawMap, "enc2");
 		}
 	}
 	
-	function drawMap() {
+	function drawMap(world) {
 		var fnt = PImage.registerFont('font.ttf', 'Open Sans');
 		fnt.load(() => {
-			var data = readInData();
+			var data = readInData(world);
 			var tribes = data[0].map(x => x.split(","));
 			var players = data[1].map(x => x.split(","));
 			var villages = data[2].map(x => x.split(","));
@@ -88,7 +89,7 @@
 				ctx.fillText((j + 1) + " " + decodeURI(tribes[j][2]), 20, 20 + j * 30);
 			}
 			
-			PImage.encodePNGToStream(img, fs.createWriteStream('public/top10.png')).then(() => {
+			PImage.encodePNGToStream(img, fs.createWriteStream("public/" + world + "top10.png")).then(() => {
 				console.log("Map Created!");
 			}).catch((e)=>{
 				console.log("An Error Occured!");
@@ -96,30 +97,30 @@
 		});
 	}
 	
-	function readInData() {
-		var tribes = fs.readFileSync("tribes.txt");
-		var players = fs.readFileSync("players.txt");
-		var villages = fs.readFileSync("villages.txt");
+	function readInData(world) {
+		var tribes = fs.readFileSync(world + "tribes.txt");
+		var players = fs.readFileSync(world + "players.txt");
+		var villages = fs.readFileSync(world + "villages.txt");
 		return [tribes.toString().trim().split("\n"), players.toString().trim().split("\n"), villages.toString().trim().split("\n")];
 	}
 	
-	function updateData(now, callback) {
-		var tribes = fs.createWriteStream("tribes.txt");
-		http.get("https://en115.tribalwars.net/map/ally.txt", (res) => {
+	function updateData(now, callback, world) {
+		var tribes = fs.createWriteStream(world + "tribes.txt");
+		http.get("https://" + world + ".tribalwars.net/map/ally.txt", (res) => {
 			res.pipe(tribes);
 			res.on('end', () => {
 				ready[0] = true;
 			});
 		});
-		var players = fs.createWriteStream("players.txt");
-		http.get("https://en115.tribalwars.net/map/player.txt", (res) => {
+		var players = fs.createWriteStream(world + "players.txt");
+		http.get("https://" + world + ".tribalwars.net/map/player.txt", (res) => {
 			res.pipe(players);
 			res.on('end', () => {
 				ready[1] = true;
 			});
 		});
-		var villages = fs.createWriteStream("villages.txt");
-		http.get("https://en115.tribalwars.net/map/village.txt", (res) => {
+		var villages = fs.createWriteStream(world + "villages.txt");
+		http.get("https://" + world + ".tribalwars.net/map/village.txt", (res) => {
 			res.pipe(villages);
 			res.on('end', () => {
 				ready[2] = true;
@@ -134,7 +135,7 @@
 			if (ready[0] && ready[1] && ready[2]) {
 				clearInterval(timer);
 				ready = [false, false, false];
-				callback();
+				callback(world);
 			} else {
 				console.log("Waiting for data...");
 			}
