@@ -27,8 +27,8 @@
 	function justDoIt() {
 		var now = new Date().getTime() / 1000 / 60 / 60;
 		if (checkReloadNeeded(now)) {
-			updateData(now, drawMap, "en115");
-			updateData(now, drawMap, "enc2");
+			setTimeout(() => updateData(now, drawMap, "enc2"), 0);
+			setTimeout(() => updateData(now, drawMap, "en115"), 0);
 		}
 	}
 	
@@ -126,17 +126,18 @@
 				ready[2] = true;
 			});
 		});
-		fs.writeFile("time.txt", now, (err) => {
+		fs.writeFile("time.txt", "" + now, (err) => {
 			if (err) throw err;
 			console.log("Time Updated");
 		});
 		var timer = null;
 		timer = setInterval(() => {
-			if (ready[0] && ready[1] && ready[2]) {
+			if (ready[1] && ready[2]) {
 				clearInterval(timer);
 				ready = [false, false, false];
 				callback(world);
 			} else {
+				console.log([ready[1], ready[2]]);
 				console.log("Waiting for data...");
 			}
 		}, 100);
